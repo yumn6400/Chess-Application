@@ -1,0 +1,145 @@
+import java.awt.*;
+import javax.swing.*;
+import java.util.*;
+import java.awt.event.*;
+class ChessUI extends JFrame implements ActionListener
+{
+private Container container;
+private JButton[][] button;
+
+
+
+private ImageIcon king_black_icon;
+private ImageIcon king_white_icon;
+private ImageIcon queen_black_icon;
+private ImageIcon queen_white_icon;
+private ImageIcon bishop_black_icon;
+private ImageIcon bishop_white_icon;
+private ImageIcon hook_black_icon;
+private ImageIcon hook_white_icon;
+private ImageIcon kneight_black_icon;
+private ImageIcon kneight_white_icon;
+private ImageIcon pawn_black_icon;
+private ImageIcon pawn_white_icon;
+
+private Point prev_position;
+private Point new_position;
+
+ChessUI()
+{
+initialize();
+
+button = new JButton[8][8];
+container=getContentPane();
+container.setLayout(new GridLayout(8,8));
+for(int i=0;i<=7;i++)
+{
+for(int j=0;j<=7;j++)
+{
+
+if(i==0)
+{
+if(j==0||j==7)button[i][j]=new JButton(hook_white_icon);
+else if(j==1||j==6)button[i][j]=new JButton(kneight_white_icon);
+else if(j==2||j==5)button[i][j]=new JButton(bishop_white_icon);
+else if(j==3)button[i][j]=new JButton(queen_white_icon);
+else if(j==4)button[i][j]=new JButton(king_white_icon);
+}
+else if(i==1)
+{
+button[i][j]=new JButton(pawn_white_icon);
+}
+else if(i==6)
+{
+button[i][j]=new JButton(pawn_black_icon);
+}
+else if(i==7)
+{
+if(j==0||j==7)button[i][j]=new JButton(hook_black_icon);
+else if(j==1||j==6)button[i][j]=new JButton(kneight_black_icon);
+else if(j==2||j==5)button[i][j]=new JButton(bishop_black_icon);
+else if(j==3)button[i][j]=new JButton(queen_black_icon);
+else if(j==4)button[i][j]=new JButton(king_black_icon);
+}
+else button[i][j]=new JButton(new String("   "));
+
+
+button[i][j].addActionListener(this);
+
+if(i%2==0)
+{
+if(j%2==0)button[i][j].setBackground(Color.WHITE);
+else button[i][j].setBackground(new Color(50,205,50));
+}
+else
+{
+if(j%2==0)button[i][j].setBackground(new Color(50,205,50));
+else button[i][j].setBackground(Color.WHITE);
+}
+container.add(button[i][j]);
+}
+}
+setLocation(100,100);
+setSize(600,600);
+setVisible(true);
+}
+public void initialize()
+{
+king_black_icon=new ImageIcon("c:/chess/chess_pieces/king_black.png");
+king_white_icon=new ImageIcon("c:/chess/chess_pieces/king_white.png");
+queen_black_icon=new ImageIcon("c:/chess/chess_pieces/queen_black.png");
+queen_white_icon=new ImageIcon("c:/chess/chess_pieces/queen_white.png");
+hook_black_icon=new ImageIcon("c:/chess/chess_pieces/hook_black.png");
+hook_white_icon=new ImageIcon("c:/chess/chess_pieces/hook_white.png");
+kneight_black_icon=new ImageIcon("c:/chess/chess_pieces/kneight_black.png");
+kneight_white_icon=new ImageIcon("c:/chess/chess_pieces/kneight_white.png");
+bishop_black_icon=new ImageIcon("c:/chess/chess_pieces/bishop_black.png");
+bishop_white_icon=new ImageIcon("c:/chess/chess_pieces/bishop_white.png");
+pawn_black_icon=new ImageIcon("c:/chess/chess_pieces/pawn_black.png");
+pawn_white_icon=new ImageIcon("c:/chess/chess_pieces/pawn_white.png");
+}
+
+public void actionPerformed(ActionEvent ev)
+{
+int row=0;
+int col=0;
+for (row = 0; row<=7; row++) 
+{
+for (col = 0; col<=7; col++) 
+{
+if (button[row][col] == ev.getSource())
+{
+if(prev_position==null)
+{
+System.out.println("1");
+prev_position=new Point(row,col);
+}
+else if(new_position==null)
+{
+System.out.println("2");
+new_position=new Point(row,col);
+Icon icon1=button[(prev_position.x)][prev_position.y].getIcon();
+Icon icon2=button[new_position.x][new_position.y].getIcon();
+if(button[new_position.x][new_position.y].getText().equalsIgnoreCase("   "))
+{
+button[prev_position.x][prev_position.y].setIcon(icon2);
+button[new_position.x][new_position.y].setIcon(icon1);
+} 
+else
+{
+button[prev_position.x][prev_position.y].setIcon(new ImageIcon("   "));
+button[new_position.x][new_position.y].setIcon(icon1);
+}  
+prev_position=null;
+new_position=null;
+}
+}
+}
+}
+}
+
+public static void main(String gg[])
+{
+ChessUI chessUI=new ChessUI();
+}
+}
